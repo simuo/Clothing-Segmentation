@@ -3,8 +3,8 @@ import os
 from PIL import Image
 from torchvision import transforms
 
-data_dir = r'../photos'
-label_dir = r'../annotations/pixmask'
+data_dir = r'/content/Clothing-Segmentation/photos'
+label_dir = r'/content/Clothing-Segmentation/annotations/pixmask'
 
 
 class MydataSet(Dataset):
@@ -18,7 +18,8 @@ class MydataSet(Dataset):
             os.path.join(data_dir, self.dataset[index]).replace('\\', '/'))
         label = Image.open(
             os.path.join(label_dir, self.dataset[index]).replace('\\', '/'))
-        transform = transforms.Compose([transforms.ToTensor()])
+        transform = transforms.Compose([transforms.Resize((600,350),interpolation=Image.BILINEAR),
+                                        transforms.ToTensor()])
         image_data = transform(image)
         lable_data = transform(label)   
         return image_data, lable_data
