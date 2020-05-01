@@ -18,10 +18,14 @@ class MydataSet(Dataset):
             os.path.join(data_dir, self.dataset[index]).replace('\\', '/'))
         label = Image.open(
             os.path.join(label_dir, self.dataset[index]).replace('\\', '/'))
-        transform = transforms.Compose([transforms.Resize((600,350),interpolation=Image.BILINEAR),
-                                        transforms.ToTensor()])
-        image_data = transform(image)
-        lable_data = transform(label)   
+        transformimg = transforms.Compose([transforms.ToTensor(),
+              transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+              ])
+        transformmask = transforms.Compose([transforms.ToTensor(),
+              transforms.Normalize((0.5), (0.5))
+              ])
+        image_data = transformimg(image)
+        lable_data = transformmask(label)  
         return image_data, lable_data
 
     def __len__(self):
