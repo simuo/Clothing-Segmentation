@@ -2,6 +2,8 @@ from torch.utils.data import Dataset
 import os
 from PIL import Image
 from torchvision import transforms
+import torch
+import numpy as np
 
 data_dir = r'/content/Clothing-Segmentation/photos'
 label_dir = r'/content/Clothing-Segmentation/annotations/pixmask'
@@ -21,11 +23,8 @@ class MydataSet(Dataset):
         transformimg = transforms.Compose([transforms.ToTensor(),
               transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
               ])
-        transformmask = transforms.Compose([transforms.ToTensor(),
-              transforms.Normalize((0.5), (0.5))
-              ])
         image_data = transformimg(image)
-        lable_data = transformmask(label)  
+        lable_data = torch.Tensor(np.array(label)) 
         return image_data, lable_data
 
     def __len__(self):
